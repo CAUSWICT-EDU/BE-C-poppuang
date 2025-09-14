@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>로그인</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('cau_logo.png') no-repeat center center;
+      background-size: 150%;
+      font-family: sans-serif;
+    }
+    .login-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box; 
+    }
+    /* Add an ID to the password input to target it specifically */
+    #password-login-input { 
+      margin-bottom: 25px; /* Increased margin to create more space */
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #004c97;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #003b75;
+    }
+    .message {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .message a {
+        color: #004c97;
+        text-decoration: none;
+        font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="login-box">
+    <h2>로그인</h2>
+    <form autocomplete="off">
+      <input type="text" name="username" placeholder="아이디" required />
+      <input id="password-login-input" type="password" name="password" placeholder="비밀번호" required />
+      <button type="submit">로그인</button>
+    </form>
+    <p class="message">
+        계정이 없으신가요? <a href="회원가입.html">회원가입</a>
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>회원가입</title>
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: url('cau_logo.png') no-repeat center center;
+      background-size: 150%;
+      font-family: sans-serif;
+    }
+    .signup-box {
+      background-color: #ffffff;
+      padding: 40px;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+      width: 300px;
+      text-align: center;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      box-sizing: border-box; 
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #004c97;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    button:hover {
+      background-color: #003b75;
+    }
+    .message {
+        margin-top: 20px;
+        font-size: 14px;
+    }
+    .message a {
+        color: #004c97;
+        text-decoration: none;
+        font-weight: bold;
+    }
+    .autocomplete {
+      position: relative;
+      width: 100%;
+    }
+    .autocomplete-items {
+      position: absolute;
+      border: none;
+      z-index: 99;
+      top: 100%;
+      left: 0;
+      right: 0;
+      max-height: 150px;
+      overflow-y: auto;
+      background-color: white;
+      box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2); 
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+    .autocomplete-items div {
+      padding: 10px 12px;
+      cursor: pointer;
+      border-bottom: 1px solid #f1f1f1;
+      font-size: 14px;
+      text-align: left;
+      transition: background-color 0.2s;
+    }
+    .autocomplete-items div strong {
+        color: #004c97;
+        font-weight: 600;
+    }
+    .autocomplete-items div:hover {
+      background-color: #004c97;
+      color: white;
+    }
+    .autocomplete-items div:hover strong {
+        color: white;
+    }
+
+    /* 비밀번호 확인 메시지(디자인) */
+    #password-message {
+      font-size: 13px;
+      margin-top: -5px;
+      text-align: left; 
+      height: 15px; 
+    }
+    .success {
+      color: green; 
+    }
+    .error {
+      color: red; 
+    }
+   
+
+  </style>
+</head>
+<body>
+  <div class="signup-box">
+    <h2>회원가입</h2>
+    <form autocomplete="off">
+      <input type="text" name="username" placeholder="아이디" required />
+      
+      <div class="autocomplete">
+        <input id="department-input" type="text" name="department" placeholder="학과 검색" required />
+      </div>
+      
+      <input id="password" type="password" name="password" placeholder="비밀번호" required />
+      <input id="password-confirm" type="password" name="password_confirm" placeholder="비밀번호 확인" required />
+      
+      <p id="password-message"></p>
+
+      <button type="button">회원가입</button>
+    </form>
+    <p class="message">
+        이미 계정이 있으신가요? <a href="로그인.html">로그인</a>
+    </p>
+  </div>
+
+<script>
+// 비밀번호 확인 기능
+const pwInput = document.getElementById('password');
+const pwConfirmInput = document.getElementById('password-confirm');
+const messageElement = document.getElementById('password-message');
+
+function checkPassword() {
+  const pw1 = pwInput.value;
+  const pw2 = pwConfirmInput.value;
+
+  if (pw2 === "") {
+    messageElement.textContent = "";
+    return;
+  }
+
+  if (pw1 === pw2) {
+    messageElement.textContent = "비밀번호가 일치합니다.";
+    messageElement.className = "success"; 
+  } else {
+    messageElement.textContent = "비밀번호가 일치하지 않습니다.";
+    messageElement.className = "error"; 
+  }
+}
+pwInput.addEventListener('keyup', checkPassword);
+pwConfirmInput.addEventListener('keyup', checkPassword);
+
+
+//학과 자동완성 기능
+function autocomplete(inp, arr) {
+  function showList() {
+      let a, b, i, val = inp.value;
+      closeAllLists();
+      
+      a = document.createElement("DIV");
+      a.setAttribute("id", inp.id + "autocomplete-list");
+      a.setAttribute("class", "autocomplete-items");
+      inp.parentNode.appendChild(a);
+      
+      for (i = 0; i < arr.length; i++) {
+        if (!val || arr[i].toUpperCase().startsWith(val.toUpperCase())) {
+          b = document.createElement("DIV");
+          
+          if(val){
+            b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+            b.innerHTML += arr[i].substr(val.length);
+          } else {
+            b.innerHTML = arr[i];
+          }
+
+          b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+          b.addEventListener("click", function(e) {
+              inp.value = this.getElementsByTagName("input")[0].value;
+              closeAllLists();
+          });
+          a.appendChild(b);
+        }
+      }
+  }
+  inp.addEventListener("input", showList);
+  inp.addEventListener("focus", showList);
+  
+  function closeAllLists(elmnt) {
+    const x = document.getElementsByClassName("autocomplete-items");
+    for (let i = 0; i < x.length; i++) {
+      if (elmnt != x[i] && elmnt != inp) {
+        x[i].parentNode.removeChild(x[i]);
+      }
+    }
+  }
+  document.addEventListener("click", function (e) {
+    closeAllLists(e.target);
+  });
+}
+// 자동완성 학과 목록
+const departments = ["간호학과", "건설환경플랜트공학과", "건축학부", "경영학부", "경제학부", "공공인재학부", "광고홍보학과", "교육학과", "국어국문학과", "국제물류학과", "기계공학부", 
+"도시계획·부동산학과", "도시시스템공학과", "미디어커뮤니케이션학부", "물리학과", "문헌정보학과", "산업보안학과", "사회복지학부", "생명과학과", "소프트웨어학부", "수학과", "심리학과", "아시아문화학부", 
+"약학부", "에너지시스템공학부", "역사학과", "영어교육과", "영어영문학과", "유아교육과", "유럽문화학부","융합공학부", "응용통계학과", "의학부","전기전자공학부", "지식경영학부", "정치국제학과","차세대반도체학과", "철학과", "체육교육과", "화학과", "AI학과"];
+autocomplete(document.getElementById("department-input"), departments);
+</script>
+
+</body>
+</html>

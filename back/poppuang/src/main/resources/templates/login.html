@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>로그인</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: url('/images/cau_logo.png') no-repeat center center;
+            background-size: 150%;
+            font-family: sans-serif;
+        }
+                /* --- 상단 파란색 헤더 스타일 --- */
+        .header {
+            width: 100%;
+            height: 55px;
+            background-color: #004c97;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        .header-button {
+            /* 버튼의 스타일 */
+            background: #ecf0f1;
+            border: none;
+            border-radius: 4px;
+            padding: 0px 16px;
+            cursor: pointer;
+            display: block;
+            width: 40px;
+            height: 40px;
+            background-image: url('/images/poppuang-closed.png');
+            background-size: 40px;
+            background-repeat: no-repeat;
+            background-position: center;
+
+            /* 마우스를 올렸을 때 부드럽게 바뀌도록 전환 효과 추가 */
+            transition: background-image 0.3s ease;
+        }
+        .header-button:hover {
+            background-image: url('/images/poppuang-open.png'); /* 마우스를 올리면 나타날 새 이미지 */
+        }
+
+        /* <img> 태그는 사용하지 않으므로 숨김 처리 */
+        .header-button img {
+            display: none;
+        }
+
+        .login-box {
+            background-color: #ffffff;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+            width: 300px;
+            text-align: center;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        /* Add an ID to the password input to target it specifically */
+        #password-login-input {
+            margin-bottom: 25px; /* Increased margin to create more space */
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #004c97;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #003b75;
+        }
+        .message a {
+            color: #004c97;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        /* ⭐ 이 부분을 style 태그 안에 추가하거나 수정해주세요 ⭐ */
+        .error-message {
+            color: #e74c3c; /* 선명한 빨간색 */
+            font-size: 14px; /* 글자 크기 */
+            font-weight: bold; /* 글자 굵게 */
+            text-align: center; /* 가운데 정렬 */
+            /* 비밀번호 창과 버튼 사이의 간격 조절 */
+            margin-top: 15px;
+            margin-bottom: 10px;
+        }
+
+    </style>
+</head>
+<body>
+<div class="header">
+    <a href="/" class="header-button">
+        <img src="/images/poppuang-closed.png" alt="홈으로">
+    </a>
+</div>
+
+<div class="login-box">
+    <h2>로그인</h2>
+    <form th:action="@{/login}" autocomplete="off" method="post">
+        <input type="text" name="uid" placeholder="아이디" required />
+        <input type="password" name="password" placeholder="비밀번호" />
+
+        <div th:if="${error}" class="error-message">
+            <p th:text="${error}"></p>
+        </div>
+
+        <button type="submit">로그인</button>
+    </form>
+</div>
+</body>
+</html>
