@@ -329,7 +329,7 @@ function setTopMajorBackground(topMajor) {
                 const myRankInfo
                     = !myNickname // myNickname 변수가 null이거나 없을 때
                     ? `<li class="myNickname"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
-                    : `<li class="myNickname"><span>나의 학과</span> <span>${myNickname}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
+                    : `<li class="myNickname"><span>나의 닉네임</span> <span>${myNickname}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
                 // myData가 없을 경우를 대비하여 ${myData.clicks} 대신 ${myData ? myData.clicks : 0}으로 안전하게 수정
                 // 나머지 리더보드
                 data.sort((a, b) => b.clicks - a.clicks)

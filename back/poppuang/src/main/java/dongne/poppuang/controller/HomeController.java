@@ -33,6 +33,7 @@ public class HomeController {
 
             //DTO에서 직접 major 뽑아올 수 있음
             model.addAttribute("myMajor", loginedUser.getMajor().getName());
+            model.addAttribute("myNickname", loginedUser.getNickname());
 
         } else {
             // 로그아웃 상태일 때

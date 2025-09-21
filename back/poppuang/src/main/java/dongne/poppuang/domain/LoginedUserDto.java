@@ -19,6 +19,7 @@ public class LoginedUserDto implements Serializable {
     private Long id;
     private String uid;
     private Major major;
+    private String nickname;
 
     /**
      * User 엔티티를 DTO로 변환하는 생성자.
@@ -30,5 +31,6 @@ public class LoginedUserDto implements Serializable {
         this.id = user.getId();
         this.uid = user.getUid();
         this.major = user.getMajor();
+        this.nickname = user.getNickname();
     }
 }
