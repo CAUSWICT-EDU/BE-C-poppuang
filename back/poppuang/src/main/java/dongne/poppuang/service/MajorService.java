@@ -15,7 +15,7 @@ public class MajorService {
     }
 
     @Transactional
-    protected void fillOutMajors() {
+    public void fillOutMajors() {
         for (EnumMajors enumMajor : EnumMajors.values()) {
             Major major = generateMajor(enumMajor.name());
             majorRepository.addMajor(major);

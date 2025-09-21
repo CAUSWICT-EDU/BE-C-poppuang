@@ -18,6 +18,9 @@ public class User {
     @Column(nullable = false, unique = true)
     private String uid;
 
+    @Column(nullable = false, unique = true)
+    private String nickname;
+
     @ManyToOne(fetch=FetchType.EAGER)
     @JoinColumn(name = "major_id")
     private Major major;

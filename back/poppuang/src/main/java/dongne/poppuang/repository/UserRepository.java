@@ -12,4 +12,6 @@ public interface UserRepository {
     List<User> findAll();
     Optional<String> findPwByUid(String uid);
 
+    Optional<User> findByNickname(String nickname);
+
 }

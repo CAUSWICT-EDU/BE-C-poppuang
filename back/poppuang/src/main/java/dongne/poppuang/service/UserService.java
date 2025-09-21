@@ -27,17 +27,16 @@ public class UserService {
     @Transactional
     public User createUser(RegisterDto registerDto) {
         String uid = registerDto.getUsername();
-        // 아이디 중복 확인 필요
+        String nickname = registerDto.getNickname();
 
         EnumMajors enum_major = EnumMajors.valueOf(registerDto.getDepartment());
         Optional<Major> major = majorRepository.findById((long) (enum_major.ordinal() + 1));
-        // 학과명이 없을 때 로직 필요 (major == null 일 때)
 
         String pw = registerDto.getPassword();
-        // 비번 검증?
 
         User user = new User();
         user.setUid(uid);
+        user.setNickname(nickname);
         user.setMajor(major.get());
         user.setPw(pw); // 해시 아직 안함
         user.setClicks(0L);
@@ -79,6 +78,21 @@ public class UserService {
         // findByUid를 호출했을 때 결과가 존재하면(isPresent() == true) 중복된 것입니다.
         return userRepository.findByUid(uid).isPresent();
     }
+
+    public boolean isNicknameDuplicate(String nickname) {
+        return userRepository.findByNickname(nickname).isPresent();
+    }
+
+    public static boolean isValidMajor(String name) {
+        // 모든 Enum 상수를 순회하면서 이름이 일치하는 것이 있는지 확인
+        for (EnumMajors major : EnumMajors.values()) {
+            if (major.name().equals(name)) {
+                return true; // 일치하는 것이 있으면 true 반환
+            }
+        }
+        return false; // 없으면 false 반환
+    }
+
 
 
     public String getMajor(String username) {

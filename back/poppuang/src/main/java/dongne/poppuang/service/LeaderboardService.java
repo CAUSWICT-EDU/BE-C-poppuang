@@ -1,24 +1,38 @@
 package dongne.poppuang.service;
 
+import dongne.poppuang.domain.LeaderBoardDto;
 import dongne.poppuang.domain.LeaderboardEntry;
 import dongne.poppuang.domain.Major;
+import dongne.poppuang.domain.User;
 import dongne.poppuang.repository.MajorRepository;
-import jakarta.transaction.Transactional;
+import dongne.poppuang.repository.UserRepository;
+
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class LeaderboardService {
     MajorRepository majorRepository;
-    public LeaderboardService(MajorRepository majorRepository) { this.majorRepository = majorRepository; }
+    UserRepository userRepository;
+    public LeaderboardService(MajorRepository majorRepository, UserRepository userRepository) {
+        this.majorRepository = majorRepository;
+        this.userRepository = userRepository;
+    }
 
     @Transactional
     public List<LeaderboardEntry> getData() {
         return createMajorList();
+    }
+
+    @Transactional
+    public List<LeaderBoardDto> getLeaderBoard() {
+        return createNicknameList();
     }
 
     private List<LeaderboardEntry> createMajorList() {
@@ -34,5 +48,17 @@ public class LeaderboardService {
         // Collections.sort(list, (o1,o2) -> Math.toIntExact(o2.getClicks() - o1.getClicks()));
 
         return list;
+    }
+
+    private List<LeaderBoardDto> createNicknameList() {
+        List<User> users = userRepository.findAll();
+
+        return users.stream()
+                .map(user -> LeaderBoardDto.builder()
+                        .nickname(user.getNickname())
+                        .clicks(user.getClicks())
+                        .majors(String.valueOf(user.getMajor()))
+                        .build())
+                .collect(Collectors.toList());
     }
 }

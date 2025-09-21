@@ -29,6 +29,8 @@ public class UserController { // 클래스 이름은 예시입니다.
     @PostMapping("/register-submit")
     public String registerSubmit(RegisterDto registerDto, Model model) {
         String uid = registerDto.getUsername(); // DTO에서 uid를 가져옵니다.
+        String nickname = registerDto.getNickname();
+        String major = registerDto.getDepartment();
 
         // 1. ⭐ 아이디 중복 확인
         if (userService.isUidDuplicate(uid)) {
@@ -40,6 +42,24 @@ public class UserController { // 클래스 이름은 예시입니다.
             model.addAttribute("majors", majors);
 
             return "signUp"; // 회원가입 뷰 이름 (signUp.html)
+        }
+
+
+
+        if(userService.isNicknameDuplicate(nickname)){
+            model.addAttribute("duplicateError", "이미 존재하는 닉네임 입니다");
+            List<Major> majors = jpaMajorRepository.findAll();
+            model.addAttribute("majors", majors);
+
+            return "signUp";
+        }
+
+        if(!userService.isValidMajor(major)){
+            model.addAttribute("duplicateError", "존재하지 않는 학과명입니다.");
+            List<Major> majors = jpaMajorRepository.findAll();
+            model.addAttribute("majors", majors);
+
+            return "signUp";
         }
 
         // 3. 중복이 아닌 경우, 회원 생성 로직을 실행합니다.

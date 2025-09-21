@@ -24,7 +24,7 @@ public class ClickService {
         User user = userRepository.findByUid(uid)
                 .orElseThrow(() -> new IllegalArgumentException("해당 유저는 존재하지 않습니다"));
         user.clickIncrement();
-        user.getMajor().clickIncrement();
+//        user.getMajor().clickIncrement();
 
         return user;
     }

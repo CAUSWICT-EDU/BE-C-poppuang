@@ -324,26 +324,25 @@ function setTopMajorBackground(topMajor) {
             .then(data => {
                 const ul = document.querySelector('.leaderboard ul');
 
-                let myMajor = "[[${myMajor}]]";
-                const myData = myMajor ? data.find(item => item.major === myMajor) : null;
+                let myNickname = "[[${myNickname}]]";
+                const myData = myNickname ? data.find(item => item.nickname === myNickname) : null;
                 const myRankInfo
-                    = !myMajor // myMajor 변수가 null이거나 없을 때
-                    ? `<li class="mymajor"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
-                    : `<li class="mymajor"><span>나의 학과</span> <span>${myMajor}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
+                    = !myNickname // myNickname 변수가 null이거나 없을 때
+                    ? `<li class="myNickname"><span> </span> <span>로그인 후 이용 가능</span> <span> </span></li>`
+                    : `<li class="myNickname"><span>나의 학과</span> <span>${myNickname}</span> <span>${myData ? myData.clicks : 0}</span></li>`;
                 // myData가 없을 경우를 대비하여 ${myData.clicks} 대신 ${myData ? myData.clicks : 0}으로 안전하게 수정
                 // 나머지 리더보드
                 data.sort((a, b) => b.clicks - a.clicks)
                 const leaderboardItems = data
                     .map((item, i) =>
-                        `<li><span>${i + 1}위</span> <span>${item.major}</span> <span>${item.clicks}</span></li>`
+                        `<li><span>${i + 1}위</span> <span>${item.nickname}</span> <span>${item.clicks}</span></li>`
                     )
                     .join('');
 
                 // ✅ 1위 학과로 배경 이미지 설정
                 const topRank = data[0];
-                if (topRank) {
-                    setTopMajorBackground(topRank.major);
-                }
+
+                setTopMajorBackground('소프트웨어학부');
 
                 // 위에 원하는 항목 추가 후 innerHTML 설정
                 ul.innerHTML = `

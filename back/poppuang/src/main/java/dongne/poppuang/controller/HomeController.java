@@ -1,26 +1,27 @@
 package dongne.poppuang.controller;
 
 import dongne.poppuang.domain.LoginedUserDto;
+import dongne.poppuang.service.MajorService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import dongne.poppuang.domain.Major;
 import dongne.poppuang.repository.JpaMajorRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 
     private final JpaMajorRepository jpaMajorRepository;
-
-    public HomeController(JpaMajorRepository jpaMajorRepository) {
-        this.jpaMajorRepository = jpaMajorRepository;
-    }
+    private final MajorService majorService;
 
     @GetMapping("/")
     public String home(Model model, HttpServletRequest request) {
@@ -45,11 +46,18 @@ public class HomeController {
     public String signup(Model model) {
         List<Major> majors = jpaMajorRepository.findAll();
         model.addAttribute("majors", majors); // major객체 자체를 뷰로 넘겨줌. 뷰에서도 major.name이런식으로 활용가능. Major객체 리스트 majors를 넘김
+
         return "signUp";
     }
 
     @GetMapping("/login")
     public String login() {
         return "login";
+    }
+
+
+    @PostMapping("/majors/setting")
+    public void initMajors(){
+        majorService.fillOutMajors();
     }
 }
